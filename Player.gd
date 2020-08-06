@@ -24,7 +24,8 @@ func _process(delta):
 	position.y = clamp(position.y, 0, screen_size.y)
 	
 	if velocity.x != 0:
-		$Sprite.flip_h = velocity.x < 0
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+		$Tank.flip_h = velocity.x < 0
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		event.relative
