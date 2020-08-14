@@ -3,7 +3,13 @@ extends KinematicBody2D
 export var speed = 400
 export var gravity = 200.0
 
+signal shoot(Bullet, direction, location)
+
+var Bullet = preload("res://Bullet.tscn")
+
 var velocity = Vector2()
+
+var turret_flipped_position = 16
 
 var screen_size
 
@@ -13,39 +19,23 @@ func _ready():
 
 
 func _input(event):
-	var tank_position = self.position
+	var tank_position = position + $Turret.position
 	var mouse_position
 	
 	if event is InputEventMouseMotion:
 		mouse_position = event.position
-		var x = tank_position.x - mouse_position.x
-		var y = tank_position.y - mouse_position.y
-		var angle_between_points = rad2deg(atan2(y, x))
-		print(angle_between_points)
-		
-		$Tank.flip_h = 0 < angle_between_points and angle_between_points < 90
-	
-		if $Tank.flip_h:
-			$Turret.position.x = -16
-			if $Turret.rotation_degrees > 0:
-				$Turret.rotation_degrees *= -1
-			var max_angle = 0
-			var min_angle = -90
-			var adjusted_angle = min_angle + angle_between_points
-			print(adjusted_angle)
-			adjusted_angle = clamp(adjusted_angle, min_angle, max_angle)
-			print(adjusted_angle)
-			if adjusted_angle > min_angle and adjusted_angle < max_angle:
-				$Turret.rotation_degrees = adjusted_angle
-		else:
-			$Turret.position.x = 16
-			if $Turret.rotation_degrees < 0:
-				$Turret.rotation_degrees *= -1
-			var adjusted_angle = angle_between_points - 90
-			adjusted_angle = clamp(adjusted_angle, 0, 90)
-			if adjusted_angle > 0 and adjusted_angle < 90:
-				$Turret.rotation_degrees = adjusted_angle
+		set_turret_position(mouse_position, tank_position)
 
+
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.pressed:
+			set_turret_position(event.position, tank_position)
+			var turret_size = $Turret.texture.get_height()
+			var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
+			var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
+			var bullet_starting_position = tank_position + offset_rotated
+
+			emit_signal("shoot", Bullet, deg2rad($Turret.rotation_degrees + 90), bullet_starting_position)
 
 
 func _physics_process(delta):
@@ -62,3 +52,27 @@ func _physics_process(delta):
 		velocity = velocity.normalized() * speed
 		
 	move_and_slide(velocity, Vector2(0, -1))
+
+
+func set_turret_position(mouse_position, tank_position):
+	var x = tank_position.x - mouse_position.x
+	var y = tank_position.y - mouse_position.y
+	var angle_between_points = rad2deg(atan2(y, x))
+	$Tank.flip_h = tank_position.x > mouse_position.x
+	
+	$Turret.position.x = -turret_flipped_position if $Tank.flip_h else turret_flipped_position
+	
+	var adjusted_angle = -90 + angle_between_points if $Tank.flip_h else angle_between_points - 90
+	var min_angle = -90 if $Tank.flip_h else 0
+	var max_angle = 0 if $Tank.flip_h else 90
+	adjusted_angle = clamp(adjusted_angle, min_angle, max_angle)
+	
+	if min_angle < adjusted_angle and adjusted_angle < max_angle:
+		$Turret.rotation_degrees = adjusted_angle
+
+	if $Turret.rotation_degrees > max_angle:
+		$Turret.rotation_degrees *= -1
+
+	elif  $Turret.rotation_degrees < min_angle:
+		$Turret.rotation_degrees *= -1
+	
