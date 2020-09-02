@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 export var speed = 400
 export var gravity = 200.0
+export var gun_timeout = 1.0
+export var timeout_divider = 10.0
 
 signal shoot(Bullet, direction, location)
 
@@ -12,6 +14,8 @@ var velocity = Vector2()
 var turret_flipped_position = 16
 
 var screen_size
+
+var is_gun_ready_to_shoot
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,7 +32,9 @@ func _input(event):
 
 
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
+		if event.button_index == BUTTON_LEFT and event.pressed and is_gun_ready_to_shoot:
+			is_gun_ready_to_shoot = false
+			$GunTimer.start(gun_timeout / timeout_divider)
 			set_turret_position(event.position, tank_position)
 			var turret_size = $Turret.texture.get_height()
 			var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
@@ -76,3 +82,7 @@ func set_turret_position(mouse_position, tank_position):
 	elif  $Turret.rotation_degrees < min_angle:
 		$Turret.rotation_degrees *= -1
 	
+
+
+func _on_Timer_timeout():
+	is_gun_ready_to_shoot = true

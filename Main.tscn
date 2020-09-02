@@ -1,12 +1,26 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://BorderWall.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Ball.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Main.gd" type="Script" id=4]
+[ext_resource path="res://DetectionArea.tscn" type="PackedScene" id=5]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
+
+[node name="DetectionArea1" parent="." instance=ExtResource( 5 )]
+modulate = Color( 0.0313726, 0, 1, 1 )
+show_behind_parent = true
+position = Vector2( 256, 440 )
+scale = Vector2( 1.9, 1.1 )
+monitorable = false
+
+[node name="DetectionArea2" parent="." instance=ExtResource( 5 )]
+modulate = Color( 0, 1, 0, 1 )
+position = Vector2( 776, 440 )
+scale = Vector2( 1.9, 1.1 )
 
 [node name="WallContainer" type="Node" parent="."]
 
@@ -56,8 +70,15 @@ position = Vector2( 152, 600 )
 
 [node name="Ball" parent="." instance=ExtResource( 2 )]
 position = Vector2( 344, 472 )
+collision_layer = 3
 collision_mask = 3
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 208, 488 )
+
+[node name="HUD" parent="." instance=ExtResource( 6 )]
+[connection signal="body_entered" from="DetectionArea1" to="HUD" method="_on_DetectionArea1_body_entered"]
+[connection signal="body_exited" from="DetectionArea1" to="HUD" method="_on_DetectionArea1_body_exited"]
+[connection signal="body_entered" from="DetectionArea2" to="HUD" method="_on_DetectionArea2_body_entered"]
+[connection signal="body_exited" from="DetectionArea2" to="HUD" method="_on_DetectionArea2_body_exited"]
 [connection signal="shoot" from="Player" to="." method="_on_Player_shoot"]
