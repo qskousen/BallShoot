@@ -1,66 +1,32 @@
 extends KinematicBody2D
 
-export var speed = 400
-export var gravity = 200.0
+
 export var gun_timeout = 1.0
 export var timeout_divider = 10.0
 
-signal shoot(Bullet, direction, location)
-
-var Bullet = preload("res://Bullet.tscn")
-
-var velocity = Vector2()
-
 var turret_flipped_position = 16
-
-var screen_size
 
 var is_gun_ready_to_shoot
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	screen_size = get_viewport_rect().size
 
-
-func _input(event):
-	var tank_position = position + $Turret.position
-	var mouse_position
-	
-	if event is InputEventMouseMotion:
-		mouse_position = event.position
-		set_turret_position(mouse_position, tank_position)
-
-
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed and is_gun_ready_to_shoot:
-			is_gun_ready_to_shoot = false
-			$GunTimer.start(gun_timeout / timeout_divider)
-			set_turret_position(event.position, tank_position)
-			var turret_size = $Turret.texture.get_height()
-			var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
-			var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
-			var bullet_starting_position = tank_position + offset_rotated
-
-			emit_signal("shoot", Bullet, deg2rad($Turret.rotation_degrees + 90), bullet_starting_position)
-
-
-func _physics_process(delta):
-	velocity.y += delta * gravity
-	
-	if Input.is_action_pressed("ui_left"):
-		velocity.x = -speed
-	elif Input.is_action_pressed("ui_right"):
-		velocity.x = speed
-	else:
-		velocity.x = 0
+func fire(position_to_fire_at, player_position):
+	if is_gun_ready_to_shoot:
+		is_gun_ready_to_shoot = false
+		$GunTimer.start(gun_timeout / timeout_divider)
+		set_turret_position(position_to_fire_at, player_position)
+		var turret_size = $Turret.texture.get_height()
+		var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
+		var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
+		var bullet_starting_position = player_position + $Turret.position + offset_rotated
 		
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-		
-	move_and_slide(velocity, Vector2(0, -1))
+		EventAggregator.shout("shoot", [deg2rad($Turret.rotation_degrees + 90), bullet_starting_position])
 
 
-func set_turret_position(mouse_position, tank_position):
+func move(velocity):
+	return move_and_slide(velocity, Vector2(0, -1))
+
+func set_turret_position(mouse_position, player_position):
+	var tank_position = player_position + $Turret.position
 	var x = tank_position.x - mouse_position.x
 	var y = tank_position.y - mouse_position.y
 	var angle_between_points = rad2deg(atan2(y, x))
@@ -81,7 +47,6 @@ func set_turret_position(mouse_position, tank_position):
 
 	elif  $Turret.rotation_degrees < min_angle:
 		$Turret.rotation_degrees *= -1
-	
 
 
 func _on_Timer_timeout():
