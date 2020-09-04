@@ -8,6 +8,8 @@ var Bullet = preload('res://actors/Bullet.tscn')
 func _ready():
 	EventAggregator.listen("bullet_expired", funcref(self, "_on_bullet_expired"))
 	EventAggregator.listen("shoot", funcref(self, "_on_player_shoot"))
+	$AiController.target = $Ball
+
 
 func _on_player_shoot(direction, location):
 	var b = Bullet.instance()
@@ -19,7 +21,7 @@ func _on_player_shoot(direction, location):
 	var spray = TurretSpray.instance()
 	spray.emitting = true
 	spray.position = location
-	spray.rotation = direction + PI
+	spray.rotation = direction + PI 
 	add_child(spray)
 	
 	
