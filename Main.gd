@@ -1,8 +1,8 @@
 extends Node
 
-var TurretSpray = preload("res://ShotFiredParticles.tscn")
-var BulletBreak = preload("res://ShotBreakingParticles.tscn")
-var Bullet = preload('res://Bullet.tscn')
+var TurretSpray = preload("res://actors/ShotFiredParticles.tscn")
+var BulletBreak = preload("res://actors/ShotBreakingParticles.tscn")
+var Bullet = preload('res://actors/Bullet.tscn')
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

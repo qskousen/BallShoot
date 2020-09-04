@@ -1,26 +1,26 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/art/tank.png" type="Texture" id=1]
-[ext_resource path="res://Player.gd" type="Script" id=2]
-[ext_resource path="res://assets/art/turret.png" type="Texture" id=3]
+[ext_resource path="res://actors/Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/art/turret.png" type="Texture" id=2]
+[ext_resource path="res://assets/art/tank.png" type="Texture" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( -40, 40, 40, 40, 36, 16, 16, 6, -16, 12 )
 
 [node name="Player" type="KinematicBody2D"]
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 gun_timeout = 5.0
 
 [node name="Turret" type="Sprite" parent="."]
-position = Vector2( 16, 30 )
-texture = ExtResource( 3 )
+position = Vector2( 16, 6 )
+texture = ExtResource( 2 )
 offset = Vector2( 0, -22 )
 
 [node name="Tank" type="Sprite" parent="."]
-position = Vector2( 0, 24 )
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 
 [node name="TankCollision2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -24 )
 shape = SubResource( 1 )
 
 [node name="GunTimer" type="Timer" parent="."]

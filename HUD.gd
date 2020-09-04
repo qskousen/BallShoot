@@ -4,42 +4,38 @@ var blue_score = 0
 
 var green_score = 0
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	EventAggregator.listen("blue_entered", funcref(self, "_on_DetectionArea_blue_body_entered"))
+	EventAggregator.listen("blue_exited", funcref(self, "_on_DetectionArea_blue_body_exited"))
+	EventAggregator.listen("green_entered", funcref(self, "_on_DetectionArea_green_body_entered"))
+	EventAggregator.listen("green_exited", funcref(self, "_on_DetectionArea_green_body_exited"))
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func update_blue_score(score):
 	blue_score += score
 	$BlueScore.text = str(blue_score)
+	
 	
 func update_green_score(score):
 	green_score += score
 	$GreenScore.text = str(green_score)
 
 
-func _on_DetectionArea1_body_entered(_body):
+func _on_DetectionArea_blue_body_entered():
 	$BlueScoreTimer.start()
 
 
-func _on_DetectionArea1_body_exited(_body):
+func _on_DetectionArea_blue_body_exited():
 	$BlueScoreTimer.stop()
 
 
-func _on_DetectionArea2_body_entered(_body):
+func _on_DetectionArea_green_body_entered():
 	$GreenScoreTimer.start();
 
 
-func _on_DetectionArea2_body_exited(_body):
+func _on_DetectionArea_green_body_exited():
 	$GreenScoreTimer.stop()
 
 
