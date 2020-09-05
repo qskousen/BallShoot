@@ -4,6 +4,9 @@ var blue_score = 0
 
 var green_score = 0
 
+var message_updated_times = 0
+
+var seconds = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -48,4 +51,26 @@ func _on_GreenScoreTimer_timeout():
 
 
 func _on_GetReadyTimer_timeout():
-	$Message.visible = false
+	if message_updated_times == 0:
+		$Message.text = "Set!"
+		$SecondTimer.start()
+	elif message_updated_times == 1:
+		$Message.text = "GO!"
+		
+	elif message_updated_times == 2:
+		$Message.visible = false
+		EventAggregator.shout("start_game_message_gone", [])
+	elif message_updated_times >= 3:
+		$GetReadyTimer.stop()
+		return
+	message_updated_times += 1
+	$GetReadyTimer.stop()
+	$GetReadyTimer.start()
+
+
+func _on_SecondTimer_timeout():
+	if seconds < 10:
+		$Time.text = "0" + str(seconds)
+	else:
+		$Time.text = str(seconds)
+	seconds += 1

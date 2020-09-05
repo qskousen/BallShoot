@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/485013__g-e-n-e__glass-plink-2.wav-34c1b2d42e2c86b20d3d1c436a2db4bf.sample"
+
+[deps]
+
+source_file="res://assets/sound/485013__g-e-n-e__glass-plink-2.wav"
+dest_files=[ "res://.import/485013__g-e-n-e__glass-plink-2.wav-34c1b2d42e2c86b20d3d1c436a2db4bf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

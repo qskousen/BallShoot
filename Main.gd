@@ -8,7 +8,9 @@ var Bullet = preload('res://actors/Bullet.tscn')
 func _ready():
 	EventAggregator.listen("bullet_expired", funcref(self, "_on_bullet_expired"))
 	EventAggregator.listen("shoot", funcref(self, "_on_player_shoot"))
+	EventAggregator.listen("start_game_message_gone", funcref(self, "_unpause_game"))
 	$AiController.target = $Ball
+	get_tree().paused = true
 
 
 func _on_player_shoot(direction, location):
@@ -30,3 +32,7 @@ func _on_bullet_expired(position):
 	rubble.emitting = true
 	rubble.position = position
 	add_child(rubble)
+
+
+func _unpause_game():
+	get_tree().paused = false

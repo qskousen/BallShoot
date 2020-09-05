@@ -23,6 +23,8 @@ func fire(position_to_fire_at, offset):
 		var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
 		var bullet_starting_position = position + $Turret.position + offset_rotated + offset
 		
+		$Shooting_Sound.play()
+		
 		EventAggregator.shout("shoot", [deg2rad($Turret.rotation_degrees + 90), bullet_starting_position])
 
 
