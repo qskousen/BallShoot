@@ -59,6 +59,7 @@ anchor_right = 0.448
 anchor_bottom = 0.052
 margin_right = 90.0
 margin_bottom = 78.0
+grow_horizontal = 2
 custom_fonts/font = SubResource( 1 )
 text = "00"
 align = 1
@@ -66,18 +67,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BlueScoreTimer" type="Timer" parent="."]
+[node name="Timers" type="Node" parent="."]
+
+[node name="BlueScoreTimer" type="Timer" parent="Timers"]
 wait_time = 0.1
 
-[node name="GreenScoreTimer" type="Timer" parent="."]
-wait_time = 0.1
+[node name="SecondTimer" type="Timer" parent="Timers"]
 
-[node name="GetReadyTimer" type="Timer" parent="."]
+[node name="GetReadyTimer" type="Timer" parent="Timers"]
 one_shot = true
 autostart = true
 
-[node name="SecondTimer" type="Timer" parent="."]
-[connection signal="timeout" from="BlueScoreTimer" to="." method="_on_BlueScoreTimer_timeout"]
-[connection signal="timeout" from="GreenScoreTimer" to="." method="_on_GreenScoreTimer_timeout"]
-[connection signal="timeout" from="GetReadyTimer" to="." method="_on_GetReadyTimer_timeout"]
-[connection signal="timeout" from="SecondTimer" to="." method="_on_SecondTimer_timeout"]
+[node name="GreenScoreTimer" type="Timer" parent="Timers"]
+wait_time = 0.1
+[connection signal="timeout" from="Timers/BlueScoreTimer" to="." method="_on_BlueScoreTimer_timeout"]
+[connection signal="timeout" from="Timers/SecondTimer" to="." method="_on_SecondTimer_timeout"]
+[connection signal="timeout" from="Timers/GetReadyTimer" to="." method="_on_GetReadyTimer_timeout"]
+[connection signal="timeout" from="Timers/GreenScoreTimer" to="." method="_on_GreenScoreTimer_timeout"]

@@ -4,14 +4,18 @@ var TurretSpray = preload("res://actors/ShotFiredParticles.tscn")
 var BulletBreak = preload("res://actors/ShotBreakingParticles.tscn")
 var Bullet = preload('res://actors/Bullet.tscn')
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	EventAggregator.listen("bullet_expired", funcref(self, "_on_bullet_expired"))
 	EventAggregator.listen("shoot", funcref(self, "_on_player_shoot"))
 	EventAggregator.listen("start_game_message_gone", funcref(self, "_unpause_game"))
-	$AiController.target = $Ball
+	
+	if Globals.play_type == Globals.TypeOfPlay.SINGLE_PLAYER:
+		_load_ai()
+		
 	get_tree().paused = true
-
+	
 
 func _on_player_shoot(direction, location):
 	var b = Bullet.instance()
@@ -36,3 +40,10 @@ func _on_bullet_expired(position):
 
 func _unpause_game():
 	get_tree().paused = false
+	
+	
+func _load_ai():
+	var ai = Globals.ai.instance()
+	ai.target = $Ball
+	ai.position = Globals.starting_point_right
+	add_child(ai)	

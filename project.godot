@@ -16,11 +16,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Ball Shoot"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Menu.tscn"
 
 [autoload]
 
 EventAggregator="*res://EventAggregator.gd"
+Globals="*res://Globals.gd"
 
 [gdnative]
 
