@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://actors/Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/art/turret.png" type="Texture" id=2]
+[ext_resource path="res://assets/art/tank.png" type="Texture" id=3]
+[ext_resource path="res://assets/sound/shoot.wav" type="AudioStream" id=4]
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+points = PoolVector2Array( -40, 40, 40, 40, 36, 16, 16, 6, -16, 12 )
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 4 )
+random_pitch = 1.3
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+gun_timeout = 5.0
+
+[node name="Turret" type="Sprite" parent="."]
+position = Vector2( 16, 6 )
+texture = ExtResource( 2 )
+offset = Vector2( 0, -22 )
+
+[node name="Tank" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="TankCollision2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -24 )
+shape = SubResource( 1 )
+
+[node name="GunTimer" type="Timer" parent="."]
+wait_time = 0.001
+autostart = true
+
+[node name="Shooting_Sound" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 2 )
+volume_db = -6.0
+[connection signal="timeout" from="GunTimer" to="." method="_on_Timer_timeout"]
