@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/font/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Menu.gd" type="Script" id=2]
+[ext_resource path="res://menu/Menu.gd" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )
@@ -75,10 +75,10 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Username" type="Label" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
-margin_top = 159.0
-margin_right = 255.0
-margin_bottom = 189.0
+margin_left = 56.0
+margin_top = 160.0
+margin_right = 256.0
+margin_bottom = 190.0
 rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 4
 custom_fonts/font = SubResource( 2 )
@@ -87,9 +87,9 @@ align = 1
 valign = 1
 
 [node name="UsernameInput" type="LineEdit" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
+margin_left = 56.0
 margin_top = 194.0
-margin_right = 255.0
+margin_right = 256.0
 margin_bottom = 224.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -100,10 +100,10 @@ max_length = 40
 context_menu_enabled = false
 
 [node name="Password" type="Label" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
-margin_top = 227.0
-margin_right = 255.0
-margin_bottom = 257.0
+margin_left = 56.0
+margin_top = 228.0
+margin_right = 256.0
+margin_bottom = 258.0
 rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 4
 custom_fonts/font = SubResource( 4 )
@@ -112,9 +112,9 @@ align = 1
 valign = 1
 
 [node name="PasswordInput" type="LineEdit" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
+margin_left = 56.0
 margin_top = 262.0
-margin_right = 255.0
+margin_right = 256.0
 margin_bottom = 292.0
 rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 4
@@ -124,9 +124,9 @@ secret = true
 context_menu_enabled = false
 
 [node name="Login" type="Button" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
+margin_left = 56.0
 margin_top = 296.0
-margin_right = 255.0
+margin_right = 256.0
 margin_bottom = 326.0
 rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 4
@@ -134,9 +134,9 @@ custom_fonts/font = SubResource( 6 )
 text = "Login"
 
 [node name="Local Play" type="Button" parent="MarginContainer/HBoxContainer/CenterMenu"]
-margin_left = 55.0
+margin_left = 56.0
 margin_top = 330.0
-margin_right = 255.0
+margin_right = 256.0
 margin_bottom = 360.0
 rect_min_size = Vector2( 200, 30 )
 size_flags_horizontal = 4
@@ -162,3 +162,4 @@ custom_fonts/font = SubResource( 8 )
 text = "Options"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/LeftMenu/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/CenterMenu/Local Play" to="." method="_on_Local_Play_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/RightMenu/Options" to="." method="_on_Options_pressed"]

@@ -4,7 +4,6 @@ export var gravity = 200.0
 export var speed = 400
 
 export var gun_timeout = 1.0
-export var timeout_divider = 10.0
 
 var velocity = Vector2()
 
@@ -13,10 +12,14 @@ var turret_flipped_position = 16
 var is_gun_ready_to_shoot
 
 
+func _ready():
+	gun_timeout = Globals.cooldown
+
+
 func fire(position_to_fire_at, offset):
 	if is_gun_ready_to_shoot:
 		is_gun_ready_to_shoot = false
-		$GunTimer.start(gun_timeout / timeout_divider)
+		$GunTimer.start(gun_timeout)
 		set_turret_position(position_to_fire_at, offset)
 		var turret_size = $Turret.texture.get_height()
 		var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
