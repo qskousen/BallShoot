@@ -15,20 +15,15 @@ func _ready():
 	EventAggregator.listen("blue_exited", funcref(self, "_on_DetectionArea_blue_body_exited"))
 	EventAggregator.listen("green_entered", funcref(self, "_on_DetectionArea_green_body_entered"))
 	EventAggregator.listen("green_exited", funcref(self, "_on_DetectionArea_green_body_exited"))
+	EventAggregator.listen("game_continue", funcref(self, "_continue_game"))
+	$PauseMenu.visible = false
 
 
 func _input(_event):
-	if Input.is_action_pressed("ui_cancel") and get_tree().paused:
-		get_tree().paused = false
-		get_tree().change_scene("res://menu/Menu.tscn")
-		
-		
-	if Input.is_action_pressed("ui_cancel") and not get_tree().paused:
-		$Timers.pause_mode = Node.PAUSE_MODE_STOP
-		get_tree().paused = true
-	elif Input.is_action_just_pressed("ui_cancel") and get_tree().paused:
-		$Timers.pause_mode = Node.PAUSE_MODE_INHERIT
-		get_tree().paused = false
+	if Input.is_action_pressed("ui_cancel") and not $PauseMenu.visible:
+		_pause_game()
+	elif Input.is_action_just_pressed("ui_cancel") and $PauseMenu.visible:
+		_continue_game()
 	
 
 func update_blue_score(score):
@@ -93,19 +88,30 @@ func _on_SecondTimer_timeout():
 	
 	_game_over_check()
 	
+	
+func _continue_game():
+	$PauseMenu.visible = false
+	$Timers.pause_mode = Node.PAUSE_MODE_INHERIT
+	if message_updated_times >= 3:
+		get_tree().paused = false
+
+
+func _pause_game():
+	$Timers.pause_mode = Node.PAUSE_MODE_STOP
+	get_tree().paused = true
+	$PauseMenu.visible = true
+	
 
 func _game_over_check():
 	if Globals.victory_condition == Globals.Goal.SCORE:
-		if blue_score >= Globals.game_over_score or green_score >= Globals.game_over_score:
+		if blue_score > Globals.game_over_score or green_score > Globals.game_over_score:
 			game_over = true
 	elif Globals.victory_condition == Globals.Goal.TIME:
-		if seconds >= Globals.game_over_time:
+		if seconds > Globals.game_over_time:
 			game_over = true
 			
 	if game_over:
 		$Message.text = "GAME OVER"
 		$Message.visible = true
-		get_tree().paused = true
-		$Timers.pause_mode = Node.PAUSE_MODE_STOP
+		_pause_game()
 		
-

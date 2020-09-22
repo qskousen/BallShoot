@@ -2,7 +2,7 @@ extends VBoxContainer
 
 
 func _ready():
-	Globals.cooldown = $HSlider.value
+	$HSlider.value = Globals.cooldown
 	$HBoxContainer/CooldownValue.text = str($HSlider.value)
 
 func _on_HSlider_value_changed(value):

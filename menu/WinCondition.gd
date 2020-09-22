@@ -2,16 +2,19 @@ extends VBoxContainer
 
 
 func _ready():
-	Globals.victory_condition = Globals.Goal.SCORE
-	Globals.game_over_time = $Score/SpinBox.value
-	Globals.game_over_score = $Time/SpinBox.value
+	$HBoxContainer/OptionButton.add_item("Time", 0)
+	$HBoxContainer/OptionButton.add_item("Score", 1)
+	$HBoxContainer/OptionButton.add_item("None", 2)
+	$HBoxContainer/OptionButton.selected = Globals.victory_condition
+	$Score/SpinBox.value  = Globals.game_over_score
+	$Time/SpinBox.value = Globals.game_over_time
 
 
 func _on_OptionButton_item_selected(index):
 	if index == 0:
-		Globals.victory_condition = Globals.Goal.SCORE
-	if index == 1:
 		Globals.victory_condition = Globals.Goal.TIME
+	if index == 1:
+		Globals.victory_condition = Globals.Goal.SCORE
 	if index == 2:
 		Globals.victory_condition = Globals.Goal.NONE
 

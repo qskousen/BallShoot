@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 func _ready():
-	linear_velocity = Vector2(-Globals.bullet_speed * 10, 0)
+	linear_velocity = Vector2(Globals.bullet_speed, 0)
 	$Timer.start(Globals.bullet_life)
 
 func _physics_process(delta):

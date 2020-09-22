@@ -5,22 +5,13 @@
 [ext_resource path="res://menu/BulletSpeed.gd" type="Script" id=3]
 [ext_resource path="res://menu/Options.gd" type="Script" id=4]
 [ext_resource path="res://menu/BulletLife.gd" type="Script" id=5]
-[ext_resource path="res://menu/OptionButton.gd" type="Script" id=6]
+[ext_resource path="res://menu/AiChoice.gd" type="Script" id=6]
 [ext_resource path="res://menu/WinCondition.gd" type="Script" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
 extra_spacing_top = 5
 extra_spacing_bottom = 5
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=5]
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=6]
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -30,6 +21,15 @@ font_data = ExtResource( 1 )
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
 font_data = ExtResource( 1 )
 
 [node name="Control" type="Control"]
@@ -81,18 +81,17 @@ margin_bottom = 26.0
 margin_top = 3.0
 margin_right = 125.0
 margin_bottom = 23.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 text = "Win Condition: "
 
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/HBoxContainer/GameOptions/WinCondition/HBoxContainer"]
 margin_left = 129.0
 margin_right = 207.0
 margin_bottom = 26.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 3 )
 toggle_mode = false
 shortcut_in_tooltip = false
 text = "Score"
-script = ExtResource( 6 )
 
 [node name="Score" type="HBoxContainer" parent="MarginContainer/HBoxContainer/GameOptions/WinCondition"]
 margin_top = 30.0
@@ -103,7 +102,7 @@ margin_bottom = 54.0
 margin_top = 2.0
 margin_right = 54.0
 margin_bottom = 22.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 4 )
 text = "Score:"
 
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/HBoxContainer/GameOptions/WinCondition/Score"]
@@ -123,7 +122,7 @@ margin_bottom = 82.0
 margin_top = 2.0
 margin_right = 54.0
 margin_bottom = 22.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 4 )
 text = "Time:  "
 
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/HBoxContainer/GameOptions/WinCondition/Time"]
@@ -147,14 +146,14 @@ margin_bottom = 20.0
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletCooldown/HBoxContainer"]
 margin_right = 158.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 5 )
 text = "Shooting Cooldown"
 
 [node name="CooldownValue" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletCooldown/HBoxContainer"]
 margin_left = 162.0
 margin_right = 162.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 
 [node name="HSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GameOptions/BulletCooldown"]
 margin_top = 24.0
@@ -181,14 +180,14 @@ margin_bottom = 20.0
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletSpeed/HBoxContainer"]
 margin_right = 104.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 5 )
 text = "Bullet Speed"
 
 [node name="Speed" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletSpeed/HBoxContainer"]
 margin_left = 108.0
 margin_right = 108.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 
 [node name="HSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GameOptions/BulletSpeed"]
 margin_top = 24.0
@@ -197,7 +196,6 @@ margin_bottom = 40.0
 size_flags_horizontal = 3
 min_value = 40.0
 max_value = 80.0
-step = 1.0
 value = 60.0
 tick_count = 25
 ticks_on_borders = true
@@ -215,14 +213,14 @@ margin_bottom = 20.0
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletLife/HBoxContainer"]
 margin_right = 127.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 5 )
 text = "Bullet Life Time"
 
 [node name="Life" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/BulletLife/HBoxContainer"]
 margin_left = 131.0
 margin_right = 131.0
 margin_bottom = 20.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
 
 [node name="HSlider" type="HSlider" parent="MarginContainer/HBoxContainer/GameOptions/BulletLife"]
 margin_top = 24.0
@@ -231,10 +229,34 @@ margin_bottom = 40.0
 size_flags_horizontal = 3
 min_value = 1.0
 max_value = 5.0
-step = 1.0
 value = 3.0
 tick_count = 5
 ticks_on_borders = true
+
+[node name="AiChoice" type="VBoxContainer" parent="MarginContainer/HBoxContainer/GameOptions"]
+margin_top = 271.0
+margin_right = 235.0
+margin_bottom = 297.0
+script = ExtResource( 6 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/GameOptions/AiChoice"]
+margin_right = 235.0
+margin_bottom = 26.0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/GameOptions/AiChoice/HBoxContainer"]
+margin_top = 3.0
+margin_right = 112.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 2 )
+text = "AI Difficulty:  "
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/HBoxContainer/GameOptions/AiChoice/HBoxContainer"]
+margin_left = 116.0
+margin_right = 145.0
+margin_bottom = 26.0
+custom_fonts/font = SubResource( 3 )
+toggle_mode = false
+shortcut_in_tooltip = false
 
 [node name="Button" type="Button" parent="MarginContainer"]
 margin_left = 876.0
@@ -243,7 +265,7 @@ margin_right = 944.0
 margin_bottom = 520.0
 size_flags_horizontal = 12
 size_flags_vertical = 12
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 7 )
 text = "Return"
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/GameOptions/WinCondition/HBoxContainer/OptionButton" to="MarginContainer/HBoxContainer/GameOptions/WinCondition" method="_on_OptionButton_item_selected"]
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/GameOptions/WinCondition/Score/SpinBox" to="MarginContainer/HBoxContainer/GameOptions/WinCondition" method="_on_score_SpinBox_value_changed"]
@@ -251,4 +273,5 @@ text = "Return"
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/GameOptions/BulletCooldown/HSlider" to="MarginContainer/HBoxContainer/GameOptions/BulletCooldown" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/GameOptions/BulletSpeed/HSlider" to="MarginContainer/HBoxContainer/GameOptions/BulletSpeed" method="_on_HSlider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/HBoxContainer/GameOptions/BulletLife/HSlider" to="MarginContainer/HBoxContainer/GameOptions/BulletLife" method="_on_HSlider_value_changed"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/GameOptions/AiChoice/HBoxContainer/OptionButton" to="MarginContainer/HBoxContainer/GameOptions/AiChoice" method="_on_OptionButton_item_selected"]
 [connection signal="pressed" from="MarginContainer/Button" to="." method="_on_Button_pressed"]

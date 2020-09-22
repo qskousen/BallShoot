@@ -2,7 +2,7 @@ extends VBoxContainer
 
 
 func _ready():
-	Globals.bullet_life = $HSlider.value
+	$HSlider.value = Globals.bullet_life
 	$HBoxContainer/Life.text = str($HSlider.value)
 
 func _on_HSlider_value_changed(value):
