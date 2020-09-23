@@ -6,6 +6,8 @@ var green_score = 0
 var message_updated_times = 0
 var seconds = 0
 
+var game_over = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,25 +15,27 @@ func _ready():
 	EventAggregator.listen("blue_exited", funcref(self, "_on_DetectionArea_blue_body_exited"))
 	EventAggregator.listen("green_entered", funcref(self, "_on_DetectionArea_green_body_entered"))
 	EventAggregator.listen("green_exited", funcref(self, "_on_DetectionArea_green_body_exited"))
+	EventAggregator.listen("game_continue", funcref(self, "_continue_game"))
+	$PauseMenu.visible = false
 
 
-func _input(event):
-	if Input.is_action_pressed("ui_cancel") and not get_tree().paused:
-		$Timers.pause_mode = Node.PAUSE_MODE_STOP
-		get_tree().paused = true
-	elif Input.is_action_just_pressed("ui_cancel") and get_tree().paused:
-		$Timers.pause_mode = Node.PAUSE_MODE_INHERIT
-		get_tree().paused = false
-
+func _input(_event):
+	if Input.is_action_pressed("ui_cancel") and not $PauseMenu.visible:
+		_pause_game()
+	elif Input.is_action_just_pressed("ui_cancel") and $PauseMenu.visible:
+		_continue_game()
+	
 
 func update_blue_score(score):
 	blue_score += score
 	$BlueScore.text = str(blue_score)
+	_game_over_check()
 	
 	
 func update_green_score(score):
 	green_score += score
 	$GreenScore.text = str(green_score)
+	_game_over_check()
 
 
 func _on_DetectionArea_blue_body_entered():
@@ -81,3 +85,34 @@ func _on_SecondTimer_timeout():
 	else:
 		$Time.text = str(seconds)
 	seconds += 1
+	
+	_game_over_check()
+	
+	
+func _continue_game():
+	$PauseMenu.visible = false
+	$Timers.pause_mode = Node.PAUSE_MODE_INHERIT
+	if message_updated_times >= 3:
+		get_tree().paused = false
+
+
+func _pause_game():
+	$Timers.pause_mode = Node.PAUSE_MODE_STOP
+	get_tree().paused = true
+	$PauseMenu.visible = true
+	
+
+func _game_over_check():
+	if Globals.victory_condition == Globals.Goal.SCORE:
+		if blue_score > Globals.game_over_score or green_score > Globals.game_over_score:
+			game_over = true
+	elif Globals.victory_condition == Globals.Goal.TIME:
+		if seconds > Globals.game_over_time:
+			game_over = true
+			
+	if game_over:
+		$Message.text = "GAME OVER"
+		$Message.visible = true
+		_pause_game()
+		EventAggregator.shout("game_over", [])
+		

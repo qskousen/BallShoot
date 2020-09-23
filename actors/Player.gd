@@ -4,7 +4,6 @@ export var gravity = 200.0
 export var speed = 400
 
 export var gun_timeout = 1.0
-export var timeout_divider = 10.0
 
 var velocity = Vector2()
 
@@ -13,19 +12,20 @@ var turret_flipped_position = 16
 var is_gun_ready_to_shoot
 
 
+func _ready():
+	gun_timeout = Globals.cooldown
+
+
 func fire(position_to_fire_at, offset):
 	if is_gun_ready_to_shoot:
 		is_gun_ready_to_shoot = false
-		$GunTimer.start(gun_timeout / timeout_divider)
+		$GunTimer.start(gun_timeout)
 		set_turret_position(position_to_fire_at, offset)
-		var turret_size = $Turret.texture.get_height()
-		var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
-		var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
-		var bullet_starting_position = position + $Turret.position + offset_rotated + offset
+		var bullet_starting_position = get_starting_bullet_position(offset)
 		
 		$Shooting_Sound.play()
 		
-		EventAggregator.shout("shoot", [deg2rad($Turret.rotation_degrees + 90), bullet_starting_position])
+		EventAggregator.shout("shoot", [get_turret_rotation(), bullet_starting_position])
 
 
 func move(movement_given, delta):
@@ -66,6 +66,17 @@ func set_turret_position(position_to_fire_at, offset):
 
 	elif  $Turret.rotation_degrees < min_angle:
 		$Turret.rotation_degrees *= -1
+		
+
+func get_starting_bullet_position(offset):
+	var turret_size = $Turret.texture.get_height()
+	var offset_position = Vector2(-turret_size,0) # include the gun length in the bullet_starting_position
+	var offset_rotated = offset_position.rotated(deg2rad($Turret.rotation_degrees + 90))
+	return position + $Turret.position + offset_rotated + offset
+	
+	
+func get_turret_rotation():
+	return deg2rad($Turret.rotation_degrees + 90)
 
 
 func _on_Timer_timeout():

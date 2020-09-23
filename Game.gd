@@ -10,6 +10,7 @@ func _ready():
 	EventAggregator.listen("bullet_expired", funcref(self, "_on_bullet_expired"))
 	EventAggregator.listen("shoot", funcref(self, "_on_player_shoot"))
 	EventAggregator.listen("start_game_message_gone", funcref(self, "_unpause_game"))
+	EventAggregator.listen("game_restart", funcref(self, "_restart"))
 	
 	if Globals.play_type == Globals.TypeOfPlay.SINGLE_PLAYER:
 		_load_ai()
@@ -47,3 +48,7 @@ func _load_ai():
 	ai.target = $Ball
 	ai.position = Globals.starting_point_right
 	add_child(ai)	
+	
+	
+func _restart():
+	get_tree().reload_current_scene()
