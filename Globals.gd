@@ -24,3 +24,10 @@ var cooldown = 1.0
 var bullet_speed = -500
 
 var bullet_life = 3
+
+
+var main_menu = preload("res://menu/Menu.tscn")
+var option_menu = preload("res://menu/Options.tscn")
+
+
+

@@ -114,4 +114,5 @@ func _game_over_check():
 		$Message.text = "GAME OVER"
 		$Message.visible = true
 		_pause_game()
+		EventAggregator.shout("game_over", [])
 		

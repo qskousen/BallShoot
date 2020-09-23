@@ -85,7 +85,6 @@ func _moderate_ai(delta):
 		var space_state = get_world_2d().direct_space_state
 		var result = space_state.intersect_ray(tank_position, target.position, [self], 0b100)
 		if result and result.collider == target:
-			var shoot_at_position = target.position
 			$Tank.fire(target.position, starting_position)
 
 
@@ -116,16 +115,16 @@ func _hard_ai(delta):
 			$Tank.fire(new_target, starting_position)
 			
 
-func _aim_at_target(target):
+func _aim_at_target(target_object):
 	var bullet_initial_position = $Tank.get_starting_bullet_position(starting_position)
 	
-	var distance_target_bullet = bullet_initial_position - target.position
+	var distance_target_bullet = bullet_initial_position - target_object.position
 	var distToTargetSqr = distance_target_bullet.length_squared()
 	var distToTarget = distance_target_bullet.length()
 	var targetToBulletNorm = distance_target_bullet / distToTarget
-	var tarSpeed = target.linear_velocity.length()
-	var tarSpeedSqr = target.linear_velocity.length_squared()
-	var tarVelNorm = target.linear_velocity / tarSpeed
+	var tarSpeed = target_object.linear_velocity.length()
+	var tarSpeedSqr = target_object.linear_velocity.length_squared()
+	var tarVelNorm = target_object.linear_velocity / tarSpeed
 	var projSpeedSqr = Globals.bullet_speed * Globals.bullet_speed
 	var cosTheta = Vector2(targetToBulletNorm).dot(tarVelNorm)
 	
@@ -135,8 +134,8 @@ func _aim_at_target(target):
 	
 	var estimatedTravelTime = (-2 * distToTarget * tarSpeed * cosTheta + offset) / (2 * (projSpeedSqr - tarSpeedSqr))
 	if(estimatedTravelTime <= 0 or is_nan(estimatedTravelTime)):
-		return target.position
+		return target_object.position
 	else:
-		var anticipated_aim = target.position + tarVelNorm * tarSpeed * estimatedTravelTime
+		var anticipated_aim = target_object.position + tarVelNorm * tarSpeed * estimatedTravelTime
 		return anticipated_aim
 	
